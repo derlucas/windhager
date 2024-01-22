@@ -186,13 +186,17 @@ def poll_windhager_values(w, oids):
         # TODO: float vs int vs string vs date?
         #  can not change as most value already as float in influxdb
         try:
-            if 'minValue' in d and 'maxValue' in d:
-                if d['minValue'] == 0 and d['maxValue'] == 1:
-                    value = int(d['value'])
+            if d['value'] == "-.-":
+                value = float(0)
+            else:
+                if 'minValue' in d and 'maxValue' in d:
+                    if d['minValue'] == 0 and d['maxValue'] == 1:
+                        value = int(d['value'])
+                    else:
+                        value = float(d['value'])
                 else:
                     value = float(d['value'])
-            else:
-                value = float(d['value'])
+
         except Exception as exc:
             w.log.warning(f"can not convert datapoint {oid}:{name} value {d['value']} {type(d['value'])}")
             # w.log.warning(f"entry: {d}")

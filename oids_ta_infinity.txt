@@ -1,8 +1,12 @@
 1/60/0/0/11/0,0-11,Abgastemperatur,56.7,°C
 
+1/60/0/2/0/0,2-0,Kessel-Alarmcode,0.0
 1/60/0/20/61/0,20-61,Laufzeit-bis-Reinigung,48.0,h
 1/60/0/20/62/0,20-62,Laufzeit-bis-Hauptreinigung,906.0,h
 1/60/0/20/63/0,20-63,Laufzeit-bis-Wartung,2620.0,h
+1/60/0/29/30/0,29-30,Summenstörung-Alarm,0
+1/60/0/29/31/0,29-31,Summenstörung-Fehler,0
+1/60/0/29/32/0,29-32,Summenstörung-Info,0
 1/60/0/43/78/0,43-78,Befüllgrad-Lagerraum,80.0,%
 1/60/0/43/42/0,43-42,Befüllgrad-Vorratsbehälter,69.0,%
 
@@ -18,7 +22,6 @@
 1/60/0/0/8/0,0-8,Rücklaufhochhaltung-Aktueller-Wert,52.6,°C
 1/60/3/1/8/0,1-8,Rücklaufhochhaltung-Sollwert,0.0,°C
 1/60/3/1/102/0,1-102,Rücklaufhochhaltung,0.0,%
-1/60/3/2/0/0,2-0,Alarmcode,0.0
 1/60/3/21/65/0,21-65,Puffertemperatur-TPE,60.9,°C
 1/60/3/21/66/0,21-66,Puffertemperatur-TPA,44.3,°C
 1/60/3/2/9/0,2-9,Betriebsart,12.0
