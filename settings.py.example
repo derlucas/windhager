@@ -1,0 +1,14 @@
+WINDHAGER_HOST = '192.168.2.190'
+WINDHAGER_USER = 'Service'
+WINDHAGER_PASS = '123'
+
+INFLUX_URL = 'https://localhost:443/'
+INFLUX_BUCKET = 'windhagerdata'
+INFLUX_TOKEN = ''
+INFLUX_ORG = 'demo'
+
+MQTT_HOST = 'localhost'
+MQTT_USER = ''
+MQTT_PASS = ''
+
+OIDS_FILE = 'oids.txt'

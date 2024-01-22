@@ -1,4 +1,4 @@
-Dieses Projekt dient zum Monitoring und der Optimierung meiner BioWin2 von Windhager von 2018.
+Dieses Projekt dient zum Monitoring und der Optimierung einer BioWin2 von Windhager von 2024.
 
 **Benutzung auf eigene Gefahr! Diese Skripte funktionieren für mich sind aber alles andere als gut getestet!**
 
@@ -33,6 +33,20 @@ Laut Anleitung, default:
 
 **Wichtig** Es kann entweder die Windhager myConnect-App oder die API genutzt werden, da Windhager bei Verwendung der App das Passwort ändert!
 
+In 2024 erlaubt Windhager keine Steuerung durch Drittanbieter. Das hat der Service per Email bestätigt. Man kann aber durch einen Trick das 
+Webserver Passwort im Windhager Connect Portal auslesen. Die Menüs sind lediglich versteckt.
+
+Nach dem Login kann man seine Anlage ansehen, die URL ist in etwa: https://connect.windhager.com/systems/XXXXXXXXX/management
+Ändert man den Begriff "management" am Ende der URL zu "settings", kann man das Webserverpasswort anzeigen. Weitere URLs sind:
+
+- management
+- settings
+- parameters
+- progression
+- logs
+- parameter-logs
+
+
 # Logging
 
 Das wichtigste Thema dieses Projekts ist das Logging der Daten der Heizung um diese evtl. zu optimieren oder zumindest Probleme zu erkennen.
@@ -44,12 +58,22 @@ Eine Liste mit allen im Setup verfügbaren Datenpunkten kann mit dem Skript wind
 Diese Liste sollte danach ausgedünnt werden da zumindest bei mir viele Datenpunkte nicht relevant oder zum Teil auch einfach doppelt vorhanden sind.
 Beispielhaft ist die in meinem System verwendete oids.txt im Projekt hinterlegt.
 
+Bei einer BioWin Anlage in 2024 ist im Webserver keine "api-docs" mehr verfügbar. Die Anlage wurde wegen der Chipkrise mit einer externen Steuerung
+ausgeliefert. Deshalb kann man das Script "windhager-getall.py" mit dem Parameter "--ta" starten welches die Bezeichnungen der Parameter aus den
+Dateien "de-oem-parameters.json" und "de-parameters.json" ausliest.
+Die zwei json Dateien stammen vom Windhager Connect Webserver.
+
+
+
 ## windhager-proxy.py
 
 Simples Skript welches die Datenpunkte welche in oids.txt (--oids) gelistet sind regelmäßig abfragt und an MQTT und Influx verteilt.
 In meinem Fall werden die Daten per Grafana visualisiert:
 
 Um dieses Skript der systemd automatisch zu starten kann die Datei `windhager-proxy.service` genutzt werden. Dieses muss dazu nach z.B. `/etc/systemd/system/` kopiert werden.
+
+Die Zugangsdaten zur Windhager Anlage, InfluxDB (2.x) sowie MQTT werden in der Datei "settings.py" vorgenommen. Bitte dazu die Beispieldatei umbenennen.
+
 
 ![Grafana Beispiel](screenshots/20211129_grafana_beispiel.png)
 

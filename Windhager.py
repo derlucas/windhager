@@ -23,12 +23,15 @@ class Windhager:
     DATAPOINTS_API = 'api/1.0/datapoints'
     OBJECT_API = 'api/1.0/object'
 
-    def __init__(self, hostname, user = 'Service', password = '123', level='INFO'):
+    def __init__(self, hostname, user = 'Service', password = '123', level='INFO', ta=False):
+        self._ta = ta
         self._host = hostname
         self._user = user
         self._password = password
         self._xml_ident = None
         self._xml_enum = None
+        self._parameters_json = None
+        self._parameters_oem_json = None
         self.auth = HTTPDigestAuth(user, password)
 
         # configure logging
@@ -38,6 +41,7 @@ class Windhager:
 
         # check connectivity to device
         self.get('api-docs/')
+
 
     def set(self, api, data, params = None, timeout=2):
         """ Issue a put request to InfoWin
@@ -193,12 +197,38 @@ class Windhager:
                 self._xml_enum = etree.fromstring(resp.encode('utf-8'))
         return self._xml_enum
 
+    @property
+    def parameters_json(self):
+        """ Retrieve Information from json file """
+        if not self._parameters_json:
+            with open('de-parameters.json') as f:
+                self._parameters_json = json.load(f)
+        return self._parameters_json
+
+    @property
+    def parameters_oem_json(self):
+        """ Retrieve Information from OEM json file """
+        if not self._parameters_oem_json:
+            with open('de-oem-parameters.json') as f:
+                self._parameters_oem_json = json.load(f)
+        return self._parameters_oem_json
+
     def id_to_string(self, gn, mn):
-        """ Convert groupNr + memberNr to Text found in XML file if any """
-        e = self.xml_ident.find('gn[@id="' + str(gn) + '"]/mn[@id="' + str(mn) + '"]')
-        if e is not None:
-            if e.text is not None:
-                return e.text.strip()
+        """ Convert groupNr + memberNr to Text found in parameters.json or XML file if any """
+
+        if self._ta:
+            if not self.parameters_json['oids'].get(str(gn) + "/" + str(mn)) is None:
+                return self.parameters_json['oids'].get(str(gn) + "/" + str(mn)).strip()
+
+            if not self.parameters_oem_json['oids_oem'].get(str(gn) + "/" + str(mn)) is None:
+                return self.parameters_oem_json['oids_oem'].get(str(gn) + "/" + str(mn)).strip()
+                
+        else:
+            e = self.xml_ident.find('gn[@id="' + str(gn) + '"]/mn[@id="' + str(mn) + '"]')
+            if e is not None:
+                if e.text is not None:
+                    return e.text.strip()
+
         return ""
 
     def id_to_enum(self, gn, mn):
